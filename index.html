@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Happy Birthday Arvind! 🎂</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎂</text></svg>">
+  
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:ital,wght@0,300;0,400;0,600;1,400;1,600&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="css/styles.css">
+  
+  <!-- External Libraries -->
+  <script src="lib/gsap.min.js" defer></script>
+  <script src="lib/ScrollTrigger.min.js" defer></script>
+  <script src="lib/howler.min.js" defer></script>
+  <script src="lib/confetti.min.js" defer></script>
+  <script src="lib/page-flip.browser.js" defer></script>
+  
+  <!-- App Scripts -->
+  <script src="js/app.js" defer></script>
+  <script src="js/hidden-object.js" defer></script>
+  <script src="js/quiz.js" defer></script>
+  <script src="js/magazine.js" defer></script>
+</head>
+<body class="dark-theme">
+  <!-- Grain Overlay -->
+  <div class="grain-overlay"></div>
+
+  <!-- Fullscreen Golden Flash Overlay -->
+  <div id="flash-overlay" class="flash-overlay"></div>
+
+  <!-- Audio Toggle Button -->
+  <button class="audio-toggle paused" aria-label="Toggle audio">
+    <div class="bars">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+  </button>
+
+  <!-- Direct Song Audio Element (Plays once, not on loop) -->
+  <audio id="magazine-song-audio" src="assets/sounds/youre-beautiful.mp3" preload="auto"></audio>
+
+  <!-- 1. Loading Screen -->
+  <section id="loading-screen">
+    <div class="loading-content">
+      <h2 class="loading-text">Preparing something special...</h2>
+      <div class="loading-bar-container">
+        <div class="loading-bar-fill"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2. Stage 1: Hidden Object Game -->
+  <section id="stage-hidden-object">
+    <div class="stage-header">
+      <h2>The Lost Memories</h2>
+      <p class="subtitle">Search the darkness to discover the 6 hidden memory tokens</p>
+      <div class="stage-torch-switch-wrap">
+        <button id="stage1-torch-toggle" class="ripple-toggle-btn off" role="switch" aria-checked="false" aria-label="Toggle Torchlight">
+          <span class="toggle-track">
+            <span class="track-icon track-icon-on">🔦</span>
+            <span class="track-icon track-icon-off">🌑</span>
+            <span class="toggle-thumb">
+              <span class="thumb-core"></span>
+            </span>
+          </span>
+          <span class="toggle-label-wrap">
+            <span class="toggle-label">TORCH</span>
+            <span class="toggle-status-dot"></span>
+          </span>
+        </button>
+      </div>
+    </div>
+    
+    <div id="scene-container" class="torch-off">
+      <div class="scene-background"></div>
+      
+      <!-- 6 Memory Hotspots hidden in scene -->
+      <div class="hotspot" data-id="bike" data-label="Bike" style="top: 34%; left: 18%;">
+        <span class="hotspot-icon">🏍️</span>
+      </div>
+      <div class="hotspot" data-id="music" data-label="Music" style="top: 66%; left: 82%;">
+        <span class="hotspot-icon">🎵</span>
+      </div>
+      <div class="hotspot" data-id="clock" data-label="Clock" style="top: 22%; left: 74%;">
+        <span class="hotspot-icon">⏰</span>
+      </div>
+      <div class="hotspot" data-id="fuel" data-label="Fuel" style="top: 78%; left: 26%;">
+        <span class="hotspot-icon">⛽</span>
+      </div>
+      <div class="hotspot" data-id="cards" data-label="Cards" style="top: 50%; left: 52%;">
+        <span class="hotspot-icon">🃏</span>
+      </div>
+      <div class="hotspot" data-id="cake" data-label="Cake" style="top: 62%; left: 10%;">
+        <span class="hotspot-icon">🎂</span>
+      </div>
+    </div>
+    
+    <!-- Minimal Clean Counter -->
+    <div class="minimal-counter-bar">
+      <div class="progress-bar">
+        <div class="progress-dots">
+          <div class="progress-dot"></div>
+          <div class="progress-dot"></div>
+          <div class="progress-dot"></div>
+          <div class="progress-dot"></div>
+          <div class="progress-dot"></div>
+          <div class="progress-dot"></div>
+        </div>
+        <div class="progress-text">6 Hidden Memories Remaining</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3. Stage 2: Floating Friendship Quiz with High-Intensity Torch -->
+  <section id="stage-quiz" style="display: none;">
+    <div class="floating-quiz-wrapper">
+      
+      <!-- Top Floating Header -->
+      <div class="floating-quiz-header">
+        <div class="torch-switch-container">
+          <button id="torch-toggle" class="ripple-toggle-btn active" role="switch" aria-checked="true" aria-label="Toggle Torchlight">
+            <span class="toggle-track">
+              <span class="track-icon track-icon-on">🔦</span>
+              <span class="track-icon track-icon-off">🌑</span>
+              <span class="toggle-thumb">
+                <span class="thumb-core"></span>
+              </span>
+            </span>
+            <span class="toggle-label-wrap">
+              <span class="toggle-label">TORCH</span>
+              <span class="toggle-status-dot"></span>
+            </span>
+          </button>
+        </div>
+        
+        <div class="quiz-indicator">Question 1 of 5</div>
+        <h2 class="floating-quiz-question" id="quiz-question-text">Loading question...</h2>
+        <div class="quiz-feedback" id="quiz-feedback"></div>
+      </div>
+      
+      <!-- Full Torch Light Exploration Zone with Scattered Answers -->
+      <div id="torch-container" class="torch-zone full-screen-torch">
+        <div id="object-grid" class="scattered-object-grid">
+          <!-- Dynamically populated by quiz.js -->
+        </div>
+      </div>
+      
+      <!-- Bottom Progress Dots -->
+      <div class="floating-quiz-footer">
+        <div class="quiz-progress-dots">
+          <div class="dot active"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+          <div class="dot"></div>
+        </div>
+      </div>
+      
+    </div>
+  </section>
+
+  <!-- 4. Stage 3: Magazine (20-Year Story) -->
+  <section id="stage-magazine" style="display: none;">
+    <div id="magazine-container">
+      <div id="flipbook">
+        
+        <!-- Page 0 (Cover - right page only) -->
+        <div class="page page-cover" data-page="0">
+          <div class="page-content cover-content">
+            <div class="cover-decoration top-deco"></div>
+            <p class="cover-badge">★ TWO DECADES OF BROTHERHOOD ★</p>
+            <h1 class="cover-title">THE BROTHERHOOD CHRONICLES</h1>
+            <h2 class="cover-subtitle">Arvind & Mandar</h2>
+            <div class="cover-divider"></div>
+            <p class="cover-tagline">20 Years of Chaos, Stunts, and Bending the World</p>
+            <p class="cover-edition">Birthday Special Edition • Forever &amp; Beyond</p>
+            <div class="cover-decoration bottom-deco"></div>
+          </div>
+        </div>
+
+        <!-- Page 1 (Prologue: The Colony Days) -->
+        <div class="page" data-page="1">
+          <div class="page-content">
+            <div class="page-header">Prologue • The Colony Days</div>
+            <h2 class="page-title">Two Decades in the Making</h2>
+            <div class="page-divider"></div>
+            <div class="page-text">
+              <p>It began nearly twenty years ago in the familiar lanes of our colony.</p>
+              <p>Back then, we were just two school kids with boundless energy, wild imaginations, and zero common sense. Separately, we were ordinary boys trying to survive homework and school bells.</p>
+              <p>But the day our paths crossed, the universe set into motion a brotherhood that no amount of time, distance, or growing up could ever shake.</p>
+            </div>
+            <div class="page-illustration">
+              <div class="illustration-placeholder">
+                <span>📸</span>
+                <small>The Colony Days • Where It All Began</small>
+              </div>
+            </div>
+            <div class="page-number">1</div>
+          </div>
+        </div>
+
+        <!-- Page 2 (Chapter I: Out-of-Tune Anthems) -->
+        <div class="page" data-page="2">
+          <div class="page-content">
+            <div class="page-header">Chapter I • The Sound of Freedom</div>
+            <h2 class="page-title">Screaming Into The Wind</h2>
+            <div class="page-divider"></div>
+            <div class="page-text">
+              <p class="drop-cap">There was nothing quite like riding that bike together through the colony streets. We had an unwritten tradition: inventing totally nonsensical, made-up songs and belting them out as loudly and out-of-tune as humanly possible, straight from the bottom of our throats.</p>
+              <p>Pedestrians stared. Dogs barked. We didn't give a damn. The worse we sang, the harder we laughed — until our stomachs ached and tears streamed down our faces.</p>
+            </div>
+            <blockquote class="page-quote">
+              "We weren't singers. We were setting the world's most chaotic soundtrack to the best years of our lives."
+            </blockquote>
+            <div class="page-number">2</div>
+          </div>
+        </div>
+
+        <!-- Page 3 (Chapter II: Ground Zero) -->
+        <div class="page" data-page="3">
+          <div class="page-content">
+            <div class="page-header">Chapter II • The Stunt Arena</div>
+            <h2 class="page-title">Ground Zero Legends</h2>
+            <div class="page-divider"></div>
+            <div class="page-text">
+              <p>Every superhero duo needs a testing ground. Ours had a name: <em>Ground Zero</em>.</p>
+              <p>That open patch of ground was our personal stunt arena. The goal? Master the legendary 'one-wheeler' bike stunt.</p>
+              <p>The reality? Spectacular, catastrophic, unadulterated failure. Every single attempt ended with us nearly flying off, wobbling uncontrollably, and cheering each other on like we had just won an Olympic gold.</p>
+            </div>
+            <div class="page-illustration">
+              <div class="illustration-placeholder">
+                <span>🏍️</span>
+                <small>Ground Zero Stunt Arena</small>
+              </div>
+            </div>
+            <div class="page-number">3</div>
+          </div>
+        </div>
+
+        <!-- Page 4 (Chapter II Continued: The Empty Tank Technique) -->
+        <div class="page" data-page="4">
+          <div class="page-content">
+            <div class="page-header">Chapter II — Continued</div>
+            <h2 class="page-title">Act Casual, We're Out of Petrol</h2>
+            <div class="page-divider"></div>
+            <div class="page-text">
+              <p class="drop-cap">And then came the inevitable moment every ride: the engine would sputter and die. Out of petrol. In the middle of nowhere.</p>
+              <p>Did we panic? Never. We deployed the ultimate technique: one leg stuck out, paddling and stoking the bike along the pavement, looking cool and calm.</p>
+              <p>We maintained direct eye contact with everyone passing by, pretending that gliding a dead bike with one leg was 100% intentional and peak style.</p>
+            </div>
+            <div class="page-callout">
+              <div class="callout-icon">⛽</div>
+              <p>"Rule #1: Even when the tank is empty, the swagger is forever full."</p>
+            </div>
+            <div class="page-number">4</div>
+          </div>
+        </div>
+
+        <!-- Page 5 (Chapter III: The Mystery of 2 Minutes) -->
+        <div class="page" data-page="5">
+          <div class="page-content">
+            <div class="page-header">Chapter III • Time Distortion</div>
+            <h2 class="page-title">The Legend of 'Arvind's 2 Minutes'</h2>
+            <div class="page-divider"></div>
+            <div class="page-text">
+              <p>Arvind had a superpower that baffled modern science: his relationship with time.</p>
+              <p>Whenever he said, <em>"Amma, I'll be back in 2 min,"</em> every clock in the neighborhood immediately surrendered. That '2 minutes' had an uncanny way of morphing into 2 hours, and on truly legendary days, a full 8-hour adventure.</p>
+              <p>Chai stops, endless colony debates, and unplanned detours — those '2 minutes' were always the best hours of the week.</p>
+            </div>
+            <div class="page-illustration">
+              <div class="illustration-placeholder">
+                <span>⏰</span>
+                <small>2 Minutes = 8 Hours of Shenanigans</small>
+              </div>
+            </div>
+            <div class="page-number">5</div>
+          </div>
+        </div>
+
+        <!-- Page 6 (Chapter IV: Trump Cards & Junior Wars) -->
+        <div class="page" data-page="6">
+          <div class="page-content">
+            <div class="page-header">Chapter IV • The Colony Arena</div>
+            <h2 class="page-title">Trump Cards & Loyal Companions</h2>
+            <div class="page-divider"></div>
+            <div class="page-text">
+              <p class="drop-cap">Long afternoons were settled over intense Trump Card battles. Speed, power, cylinders — we knew every stat by heart.</p>
+              <p>And then there were our juniors. Each of us had that one favorite junior we would playfully tease and boss around — a special bond where they loved being part of our circle just as much as we loved having them around.</p>
+              <p>It was our little kingdom, and we ruled it with laughter.</p>
+            </div>
+            <blockquote class="page-quote">
+              "In our colony, cards were currency, and our circle was unbreakable."
+            </blockquote>
+            <div class="page-number">6</div>
+          </div>
+        </div>
+
+        <!-- Page 7 (Chapter V: The Secret Vault) -->
+        <div class="page" data-page="7">
+          <div class="page-content">
+            <div class="page-header">Chapter V • The Unspoken Archives</div>
+            <h2 class="page-title">A Thousand Unwritten Stories</h2>
+            <div class="page-divider"></div>
+            <div class="page-text">
+              <p>Twenty years cannot fit into ten pages. And to be honest, a couple thousand of our stories can never be shared in public anyway.</p>
+              <p><em>Allegedly, we found something and buried it by digging a hole... those graves should never be dug up again!</em></p>
+              <p>The late-night conspiracies, the secret escapes, the moments of pure unadulterated madness — those remain securely locked in the vault between us. Not every memory needs words; each one holds a permanent, sacred place in our hearts.</p>
+            </div>
+            <div class="page-illustration large">
+              <div class="illustration-placeholder">
+                <span>🔒</span>
+                <small>The Brotherhood Vault • Top Secret</small>
+              </div>
+            </div>
+            <div class="page-number">7</div>
+          </div>
+        </div>
+
+        <!-- Page 8 (Chapter VI: The Real Superpower) -->
+        <div class="page" data-page="8">
+          <div class="page-content">
+            <div class="page-header">Chapter VI • The Ultimate Power</div>
+            <h2 class="page-title">Without A Care In The World</h2>
+            <div class="page-divider"></div>
+            <div class="page-text">
+              <p class="drop-cap">People spend their entire lives searching for a superpower. Despite the fact that we all secretly dreamed of saving the school from a terrorist attack, we discovered we had some other superpower twenty years ago: <strong>when we are together, the world simply fades away.</strong></p>
+              <p>No deadlines, no anxieties, no burdens of adult life. In each other's company, we step right back into that carefree bubble where anything is possible and nothing can touch us.</p>
+            </div>
+            <div class="page-callout">
+              <div class="callout-icon">🌟</div>
+              <p>"Together, we don't just survive the chaos — we make the world bend to our laughter."</p>
+            </div>
+            <div class="page-number">8</div>
+          </div>
+        </div>
+
+        <!-- Page 9 (Birthday Finale) -->
+        <div class="page" data-page="9">
+          <div class="page-content birthday-finale">
+            <div class="page-header">The 20-Year Promise</div>
+            <h2 class="page-title finale-title">Happy Birthday, Arvind! 🎂</h2>
+            <div class="page-divider"></div>
+            <div class="page-text">
+              <p>In this world, life happens. Everyone builds their path, takes on responsibilities, and moves across time and space as they should.</p>
+              <p><strong>Yet here is our truth:</strong> whenever we meet — whether after three days or three years — we will always hold that exact same superpower. In the midst of all the world's chaos, we will forever have the power to live without a single care in the world.</p>
+            </div>
+            <div class="birthday-message">
+              <p class="bday-main">🎉 Happy Birthday, Russian Brother! 🎉</p>
+              <p class="bday-sub">To 20 glorious years behind us, and a lifetime of world-bending ahead.</p>
+              <p class="bday-signature">— Always by your side, Mandar</p>
+            </div>
+            <div class="page-number">9</div>
+          </div>
+        </div>
+
+        <!-- Page 10 (Back Cover) -->
+        <div class="page page-cover page-back-cover" data-page="10">
+          <div class="page-content cover-content">
+            <p class="back-cover-text">"20 Years Strong. A Lifetime To Go."</p>
+            <div class="cover-divider"></div>
+            <p class="back-cover-sub">Stay together. Bend the world.</p>
+            <p class="back-cover-year">Two Decades &amp; A Lifetime Ahead</p>
+            <p class="back-cover-hint">✨ Click here to reveal the final truth ✨</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+    
+    <div class="magazine-navigation">
+      <p class="nav-hint">Drag the page corner or use arrow keys to flip &rarr;</p>
+      <button id="replay-btn" class="replay-btn">Replay Experience</button>
+    </div>
+  </section>
+
+  <!-- 5. Grand Finale Superpower Photo Modal -->
+  <div id="finale-superpower-modal" class="finale-superpower-modal" style="display: none;">
+    <div class="finale-superpower-card">
+      <button id="close-finale-btn" class="close-finale-btn" aria-label="Close">✕</button>
+      <div class="superpower-photo-frame">
+        <img id="superpower-photo-img" src="assets/images/arvind.jpg" alt="Arvind Superpower" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 400 400%22%3E%3Crect width=%22100%25%22 height=%22100%25%22 fill=%22%23141424%22/%3E%3Ctext x=%2250%25%22 y=%2245%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 font-size=%2280%22%3E👑%3C/text%3E%3Ctext x=%2250%25%22 y=%2270%25%22 dominant-baseline=%22middle%22 text-anchor=%22middle%22 fill=%22%23f5a623%22 font-family=%22sans-serif%22 font-size=%2222%22 font-weight=%22bold%22%3EARVIND%3C/text%3E%3C/svg%3E';">
+      </div>
+      <h2 class="superpower-headline">He indeed has a superpower 🤯</h2>
+      <div class="finale-buttons">
+        <button id="finale-replay-btn" class="finale-action-btn">Replay Journey 🔄</button>
+      </div>
+    </div>
+  </div>
+
+</body>
+</html>
+
