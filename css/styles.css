@@ -1308,6 +1308,14 @@ html {
   box-shadow: 0 15px 40px rgba(245, 166, 35, 0.6);
 }
 
+/* ─── Flipbook Shadow Overlay Click-Through ───────────────────────── */
+.stf__outerShadow,
+.stf__innerShadow,
+.stf__hardShadow,
+.stf__hardInnerShadow {
+  pointer-events: none !important;
+}
+
 /* ─── Reveal & Mobile Navigation Buttons ────────────────────────────── */
 .reveal-superpower-page-btn {
   margin-top: 1.2rem;
@@ -1321,15 +1329,15 @@ html {
   letter-spacing: 0.1em;
   text-transform: uppercase;
   font-weight: 700;
-  cursor: pointer;
+  cursor: pointer !important;
   box-shadow: 0 0 25px rgba(245, 166, 35, 0.6), 0 8px 25px rgba(233, 69, 96, 0.4);
   animation: pulseGlow 2s infinite alternate;
   transition: all 0.3s;
   display: inline-block;
-  position: relative;
-  z-index: 99999 !important;
+  position: relative !important;
+  z-index: 2147483640 !important;
   pointer-events: auto !important;
-  touch-action: manipulation;
+  touch-action: manipulation !important;
   user-select: none;
   -webkit-user-select: none;
   -webkit-tap-highlight-color: transparent;

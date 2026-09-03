@@ -405,7 +405,8 @@ window.Magazine = (function() {
           useMouseEvents: true,
           swipeDistance: 20,
           showPageCorners: true,
-          disableFlipByClick: false
+          disableFlipByClick: true,
+          clickEventForward: true
         });
 
         pageFlip.loadFromHTML(document.querySelectorAll('#flipbook .page'));
