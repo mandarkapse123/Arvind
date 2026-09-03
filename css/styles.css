@@ -1326,6 +1326,13 @@ html {
   animation: pulseGlow 2s infinite alternate;
   transition: all 0.3s;
   display: inline-block;
+  position: relative;
+  z-index: 99999 !important;
+  pointer-events: auto !important;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
 }
 
 @keyframes pulseGlow {

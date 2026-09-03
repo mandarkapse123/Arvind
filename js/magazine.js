@@ -185,21 +185,33 @@ window.Magazine = (function() {
     playFlashSound();
 
     if (window.confetti) {
-      confetti({ particleCount: 160, spread: 110, origin: { y: 0.4 }, colors: ['#f5a623', '#e94560', '#00d2d3', '#ffffff'] });
-      setTimeout(() => {
-        confetti({ particleCount: 100, spread: 120, origin: { y: 0.5 }, colors: ['#f5a623', '#ffffff'] });
-      }, 300);
+      try {
+        confetti({ particleCount: 160, spread: 110, origin: { y: 0.4 }, colors: ['#f5a623', '#e94560', '#00d2d3', '#ffffff'] });
+        setTimeout(() => {
+          confetti({ particleCount: 100, spread: 120, origin: { y: 0.5 }, colors: ['#f5a623', '#ffffff'] });
+        }, 300);
+      } catch (e) {}
     }
 
     const flashOverlay = document.getElementById('flash-overlay');
     if (flashOverlay) {
       flashOverlay.style.display = 'block';
-      gsap.fromTo(flashOverlay, { opacity: 0.9 }, { opacity: 0, duration: 1.0, onComplete: () => { flashOverlay.style.display = 'none'; } });
+      flashOverlay.style.opacity = '0.9';
+      setTimeout(() => {
+        if (window.gsap) {
+          gsap.to(flashOverlay, { opacity: 0, duration: 0.8, onComplete: () => { flashOverlay.style.display = 'none'; } });
+        } else {
+          flashOverlay.style.display = 'none';
+        }
+      }, 50);
     }
 
     // Ensure photo element is refreshed and displayed with embedded data URI
     const photoImg = document.getElementById('superpower-photo-img');
     if (photoImg) {
+      photoImg.style.display = 'block';
+      photoImg.style.visibility = 'visible';
+      photoImg.style.opacity = '1';
       if (window.ARVIND_SUPERPOWER_PHOTO) {
         photoImg.src = window.ARVIND_SUPERPOWER_PHOTO;
       } else {
@@ -207,15 +219,20 @@ window.Magazine = (function() {
       }
     }
 
+    // Instantly display modal (no delay, no opacity 0)
     finaleModal.style.display = 'flex';
     finaleModal.style.visibility = 'visible';
     finaleModal.style.opacity = '1';
+    finaleModal.style.pointerEvents = 'auto';
     finaleModal.style.zIndex = '2147483647';
-    gsap.killTweensOf(finaleModal);
-    gsap.fromTo(finaleModal, 
-      { opacity: 0, scale: 0.85, y: 30 },
-      { opacity: 1, scale: 1, y: 0, duration: 0.8, ease: 'back.out(1.4)', delay: 0.15 }
-    );
+
+    if (window.gsap) {
+      gsap.killTweensOf(finaleModal);
+      gsap.fromTo(finaleModal, 
+        { scale: 0.9, y: 15 },
+        { scale: 1, y: 0, opacity: 1, duration: 0.45, ease: 'back.out(1.2)' }
+      );
+    }
   }
 
   function closeFinaleModal() {
@@ -291,12 +308,22 @@ window.Magazine = (function() {
         if (window.App && window.App.replay) window.App.replay();
       });
 
-      // Event delegation on flipbook for the back-cover reveal button (survives any innerHTML restore)
-      flipbook?.addEventListener('click', function(e) {
-        if (e.target && (e.target.id === 'reveal-superpower-btn-p10' || e.target.closest('#reveal-superpower-btn-p10') || e.target.closest('.page-back-cover'))) {
+      // Capture-phase event listeners: guarantee button clicks fire regardless of canvas or DOM wrapper
+      document.addEventListener('click', function(e) {
+        if (e.target && (e.target.id === 'reveal-superpower-btn-p9' || e.target.closest('#reveal-superpower-btn-p9') || e.target.closest('.reveal-superpower-page-btn'))) {
+          e.preventDefault();
+          e.stopPropagation();
           triggerFinaleReveal();
         }
-      });
+      }, true);
+
+      document.addEventListener('touchend', function(e) {
+        if (e.target && (e.target.id === 'reveal-superpower-btn-p9' || e.target.closest('#reveal-superpower-btn-p9') || e.target.closest('.reveal-superpower-page-btn'))) {
+          e.preventDefault();
+          e.stopPropagation();
+          triggerFinaleReveal();
+        }
+      }, true);
 
       // Mobile / Desktop Flip Next & Previous buttons
       document.getElementById('mag-prev-btn')?.addEventListener('click', function() {
@@ -479,6 +506,10 @@ window.Magazine = (function() {
         finaleModal.style.display = 'none';
         finaleModal.style.opacity = '0';
       }
+    },
+
+    revealSuperpower: function() {
+      triggerFinaleReveal();
     }
   };
 })();
