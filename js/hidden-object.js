@@ -359,6 +359,8 @@ window.HiddenObjectGame = (function() {
         hotspot.addEventListener('click', onHotspotClick);
       });
 
+      document.getElementById('skip-hunt-btn')?.addEventListener('click', handleComplete);
+
       updateProgress();
       setupSceneTorch();
     },

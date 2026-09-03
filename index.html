@@ -22,6 +22,7 @@
   <script src="lib/page-flip.browser.js" defer></script>
   
   <!-- App Scripts -->
+  <script src="js/photo-data.js" defer></script>
   <script src="js/app.js" defer></script>
   <script src="js/hidden-object.js" defer></script>
   <script src="js/quiz.js" defer></script>
@@ -116,6 +117,7 @@
         </div>
         <div class="progress-text">6 Hidden Memories Remaining</div>
       </div>
+      <button id="skip-hunt-btn" class="skip-stage-btn" aria-label="Skip Hunt">Skip Hunt ⏭️</button>
     </div>
   </section>
 
@@ -125,20 +127,23 @@
       
       <!-- Top Floating Header -->
       <div class="floating-quiz-header">
-        <div class="torch-switch-container">
-          <button id="torch-toggle" class="ripple-toggle-btn active" role="switch" aria-checked="true" aria-label="Toggle Torchlight">
-            <span class="toggle-track">
-              <span class="track-icon track-icon-on">🔦</span>
-              <span class="track-icon track-icon-off">🌑</span>
-              <span class="toggle-thumb">
-                <span class="thumb-core"></span>
+        <div class="quiz-top-bar">
+          <div class="torch-switch-container">
+            <button id="torch-toggle" class="ripple-toggle-btn active" role="switch" aria-checked="true" aria-label="Toggle Torchlight">
+              <span class="toggle-track">
+                <span class="track-icon track-icon-on">🔦</span>
+                <span class="track-icon track-icon-off">🌑</span>
+                <span class="toggle-thumb">
+                  <span class="thumb-core"></span>
+                </span>
               </span>
-            </span>
-            <span class="toggle-label-wrap">
-              <span class="toggle-label">TORCH</span>
-              <span class="toggle-status-dot"></span>
-            </span>
-          </button>
+              <span class="toggle-label-wrap">
+                <span class="toggle-label">TORCH</span>
+                <span class="toggle-status-dot"></span>
+              </span>
+            </button>
+          </div>
+          <button id="skip-quiz-btn" class="skip-stage-btn" aria-label="Skip to Magazine">Skip to Magazine ⏭️</button>
         </div>
         
         <div class="quiz-indicator">Question 1 of 5</div>

@@ -267,26 +267,27 @@ window.QuizGame = (function () {
   }
 
   // ─── Scattered Object Placement (Dynamic for Mobile / iPad / Desktop)
-  const desktopPositions = [
-    { top: '22%', left: '16%' },
-    { top: '24%', left: '84%' },
-    { top: '56%', left: '16%' },
-    { top: '58%', left: '84%' },
-    { top: '84%', left: '28%' },
-    { top: '84%', left: '72%' }
+  const landscapePositions = [
+    { top: '26%', left: '12%' },
+    { top: '26%', left: '88%' },
+    { top: '64%', left: '12%' },
+    { top: '64%', left: '88%' },
+    { top: '84%', left: '34%' },
+    { top: '84%', left: '66%' }
   ];
 
-  const mobilePositions = [
-    { top: '50%', left: '26%' },
-    { top: '50%', left: '74%' },
-    { top: '65%', left: '26%' },
-    { top: '65%', left: '74%' },
+  const portraitPositions = [
+    { top: '48%', left: '26%' },
+    { top: '48%', left: '74%' },
+    { top: '64%', left: '26%' },
+    { top: '64%', left: '74%' },
     { top: '80%', left: '26%' },
     { top: '80%', left: '74%' }
   ];
 
   function getScatteredPositions() {
-    return (window.innerWidth <= 768) ? mobilePositions : desktopPositions;
+    const isLandscape = window.innerWidth > window.innerHeight;
+    return (window.innerWidth >= 850 && isLandscape) ? landscapePositions : portraitPositions;
   }
 
   function createObjectGrid() {
@@ -310,7 +311,12 @@ window.QuizGame = (function () {
         <span class="object-label">${obj.label}</span>
       `;
 
-      item.addEventListener('click', () => {
+      item.addEventListener('click', (e) => {
+        e.stopPropagation();
+        handleObjectClick(obj.id, item);
+      });
+      item.addEventListener('touchend', (e) => {
+        e.stopPropagation();
         handleObjectClick(obj.id, item);
       });
 
@@ -323,6 +329,10 @@ window.QuizGame = (function () {
   // ─── Answer Handling ────────────────────────────────────────────────
   function handleObjectClick(objectId, itemEl) {
     if (!isActive) return;
+
+    const now = Date.now();
+    if (itemEl._lastClick && now - itemEl._lastClick < 400) return;
+    itemEl._lastClick = now;
 
     const correctId = questions[currentQuestion].correctId;
 
@@ -484,6 +494,11 @@ window.QuizGame = (function () {
       if (torchToggle) {
         torchToggle.addEventListener('click', toggleTorch);
       }
+
+      document.getElementById('skip-quiz-btn')?.addEventListener('click', function(e) {
+        e.stopPropagation();
+        handleComplete();
+      });
 
       window.addEventListener('resize', function () {
         const items = document.querySelectorAll('.scattered-object-item');

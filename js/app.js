@@ -319,6 +319,14 @@ window.App = (function () {
     initAudio();
     initCursorEffects();
     initLoading();
+
+    document.getElementById('skip-hunt-btn')?.addEventListener('click', () => {
+      transitionToStage(2);
+    });
+
+    document.getElementById('skip-quiz-btn')?.addEventListener('click', () => {
+      transitionToStage(3);
+    });
   }
 
   // ─── DOM Ready ───────────────────────────────────────────────────────
@@ -332,6 +340,7 @@ window.App = (function () {
   return {
     replay: replay,
     enterStage: enterStage,
+    skipToStage: transitionToStage,
     getAudioContext: getAudioContext,
     get isMuted() { return isMuted; },
   };

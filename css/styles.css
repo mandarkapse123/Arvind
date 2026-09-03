@@ -540,31 +540,88 @@ html {
   100% { width: 260px; height: 260px; opacity: 0; }
 }
 
+.quiz-top-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 0.5rem;
+  pointer-events: auto;
+}
+
+.skip-stage-btn {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+  padding: 0.45rem 1.1rem;
+  border-radius: 30px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition: all 0.25s;
+  pointer-events: auto !important;
+  z-index: 50;
+  white-space: nowrap;
+}
+
+.skip-stage-btn:hover {
+  background: rgba(245, 166, 35, 0.35);
+  border-color: var(--accent-gold);
+  transform: scale(1.05);
+}
+
+.floating-quiz-header {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 92%;
+  max-width: 580px;
+  padding-top: max(0.8rem, env(safe-area-inset-top));
+  text-align: center;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.floating-quiz-header * {
+  pointer-events: auto;
+}
+
 .quiz-indicator {
   font-family: 'Inter', sans-serif;
   font-size: 0.8rem;
   letter-spacing: 0.28em;
   text-transform: uppercase;
   color: var(--accent-gold);
-  margin-bottom: 0.8rem;
+  margin-bottom: 0.4rem;
   font-weight: 600;
+  pointer-events: none;
 }
 
 .floating-quiz-question {
   font-family: 'Playfair Display', serif;
-  font-size: 2rem;
-  line-height: 1.4;
-  margin: 0 0 0.8rem;
+  font-size: 1.55rem;
+  line-height: 1.35;
+  margin: 0 0 0.4rem;
   color: #ffffff;
   font-weight: 700;
+  max-width: 540px;
+  margin-left: auto;
+  margin-right: auto;
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.9), 0 0 30px rgba(255, 255, 255, 0.2);
+  pointer-events: none; /* Touches pass directly to cards underneath! */
 }
 
 .quiz-feedback {
-  min-height: 1.6rem;
+  min-height: 1.4rem;
   font-family: 'Inter', sans-serif;
-  font-size: 1rem;
+  font-size: 0.92rem;
   font-weight: 600;
+  pointer-events: none;
 }
 
 /* Zero-Lag Pure White Torch Canvas */
@@ -595,24 +652,31 @@ html {
   position: relative;
   width: 100%;
   height: 100%;
+  z-index: 20;
+  pointer-events: auto;
 }
 
 .scattered-object-item {
   position: absolute;
   transform: translate(-50%, -50%);
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.25);
   border-radius: 18px;
-  padding: 1.4rem 1.6rem;
+  padding: 1.1rem 1.4rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
   cursor: pointer;
-  opacity: 0.18;
-  filter: blur(2.5px) grayscale(90%);
+  opacity: 0.22;
+  filter: blur(2px) grayscale(80%);
   transition: all 0.25s cubic-bezier(0.25, 1, 0.5, 1);
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  z-index: 35; /* ALWAYS above header text for 100% guaranteed clickability! */
+  pointer-events: auto !important;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 .scattered-object-item:hover {
@@ -1127,8 +1191,8 @@ html {
   left: 0;
   width: 100vw;
   height: 100vh;
-  z-index: 1000;
-  background-color: rgba(5, 5, 10, 0.94);
+  z-index: 2147483647 !important;
+  background-color: rgba(5, 5, 10, 0.95);
   backdrop-filter: blur(25px);
   display: flex;
   justify-content: center;

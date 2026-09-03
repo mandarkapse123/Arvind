@@ -197,14 +197,20 @@ window.Magazine = (function() {
       gsap.fromTo(flashOverlay, { opacity: 0.9 }, { opacity: 0, duration: 1.0, onComplete: () => { flashOverlay.style.display = 'none'; } });
     }
 
-    // Ensure photo element is refreshed and displayed
+    // Ensure photo element is refreshed and displayed with embedded data URI
     const photoImg = document.getElementById('superpower-photo-img');
     if (photoImg) {
-      photoImg.src = 'assets/images/arvind.jpg';
+      if (window.ARVIND_SUPERPOWER_PHOTO) {
+        photoImg.src = window.ARVIND_SUPERPOWER_PHOTO;
+      } else {
+        photoImg.src = 'assets/images/arvind.jpg';
+      }
     }
 
     finaleModal.style.display = 'flex';
-    finaleModal.style.zIndex = '999999';
+    finaleModal.style.visibility = 'visible';
+    finaleModal.style.opacity = '1';
+    finaleModal.style.zIndex = '2147483647';
     gsap.killTweensOf(finaleModal);
     gsap.fromTo(finaleModal, 
       { opacity: 0, scale: 0.85, y: 30 },
@@ -376,7 +382,8 @@ window.Magazine = (function() {
           }
 
           // Finale page reached
-          if (e.data >= 9) {
+          const curIndex = (pageFlip && typeof pageFlip.getCurrentPageIndex === 'function') ? pageFlip.getCurrentPageIndex() : e.data;
+          if (e.data >= 9 || curIndex >= 9) {
             setTimeout(triggerFinaleReveal, 700);
           }
         });
