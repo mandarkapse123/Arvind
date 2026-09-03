@@ -1244,48 +1244,264 @@ html {
   box-shadow: 0 15px 40px rgba(245, 166, 35, 0.6);
 }
 
-/* ─── Responsive Media Queries ───────────────────────────────────────── */
-@media (max-width: 900px) {
+/* ─── Reveal & Mobile Navigation Buttons ────────────────────────────── */
+.reveal-superpower-page-btn {
+  margin-top: 1.2rem;
+  background: linear-gradient(90deg, var(--accent-gold), var(--accent-red));
+  border: none;
+  color: #ffffff;
+  padding: 0.85rem 2rem;
+  border-radius: 50px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.92rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 0 25px rgba(245, 166, 35, 0.6), 0 8px 25px rgba(233, 69, 96, 0.4);
+  animation: pulseGlow 2s infinite alternate;
+  transition: all 0.3s;
+  display: inline-block;
+}
+
+@keyframes pulseGlow {
+  0% { transform: scale(1); box-shadow: 0 0 15px rgba(245, 166, 35, 0.5); }
+  100% { transform: scale(1.05); box-shadow: 0 0 35px rgba(245, 166, 35, 0.9), 0 0 50px rgba(233, 69, 96, 0.6); }
+}
+
+.reveal-superpower-page-btn:hover {
+  transform: translateY(-2px) scale(1.08);
+}
+
+.mag-flip-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 0.8rem;
+  flex-wrap: wrap;
+}
+
+.mag-flip-btn {
+  background: rgba(255, 255, 255, 0.12);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  color: #ffffff;
+  padding: 0.6rem 1.4rem;
+  border-radius: 30px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: all 0.25s;
+}
+
+.mag-flip-btn:hover {
+  background: rgba(255, 255, 255, 0.25);
+  border-color: var(--accent-gold);
+  transform: scale(1.04);
+}
+
+.reveal-superpower-nav-btn {
+  background: linear-gradient(90deg, var(--accent-gold), var(--accent-red));
+  border: none;
+  color: white;
+  padding: 0.6rem 1.4rem;
+  border-radius: 30px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(245, 166, 35, 0.5);
+  transition: all 0.25s;
+}
+
+.reveal-superpower-nav-btn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 30px rgba(245, 166, 35, 0.8);
+}
+
+/* ─── Responsive Media Queries (Mobile, iPad, Tablet) ────────────────── */
+@media (max-width: 768px) {
   .stage-header h2 {
-    font-size: 2rem;
+    font-size: 1.6rem;
+    letter-spacing: 0.04em;
+  }
+  
+  .stage-header p {
+    font-size: 0.8rem;
+  }
+  
+  .stage-torch-switch-wrap {
+    margin-top: 0.4rem;
+  }
+  
+  .torch-ripple-switch {
+    width: 90px;
+    height: 40px;
+  }
+  
+  .switch-thumb {
+    width: 32px;
+    height: 32px;
+  }
+  
+  .torch-label {
+    font-size: 0.68rem;
+  }
+
+  .floating-quiz-header {
+    padding-top: max(0.8rem, env(safe-area-inset-top));
+    padding-left: 0.8rem;
+    padding-right: 0.8rem;
   }
   
   .floating-quiz-question {
-    font-size: 1.5rem;
+    font-size: 1.12rem;
+    line-height: 1.35;
+    max-width: 94%;
+    margin: 0 auto 0.4rem;
+  }
+  
+  .question-indicator {
+    font-size: 0.72rem;
+    letter-spacing: 0.15em;
+    margin-bottom: 0.25rem;
+  }
+
+  .quiz-feedback {
+    font-size: 0.85rem;
+    min-height: 1.2rem;
   }
 
   .scattered-object-item {
-    padding: 1rem 1.2rem;
+    padding: 0.7rem 0.9rem;
+    border-radius: 14px;
+    gap: 4px;
   }
 
   .object-emoji {
-    font-size: 2.2rem;
+    font-size: 1.8rem;
+  }
+
+  .object-label {
+    font-size: 0.62rem;
+    letter-spacing: 0.08em;
   }
 
   #magazine-container {
     width: 96vw;
-    height: 75vh;
+    height: 72vh;
+    margin-top: 0.5rem;
   }
 
   .page-content {
-    padding: 2rem 1.5rem;
+    padding: 1.5rem 1.2rem;
+  }
+
+  .page-header {
+    font-size: 0.65rem;
+    margin-bottom: 0.8rem;
   }
 
   .page-title {
-    font-size: 1.5rem;
+    font-size: 1.35rem;
+    margin-bottom: 0.3rem;
   }
 
-  .cover-title {
-    font-size: 1.8rem;
-  }
-
-  .cover-subtitle {
-    font-size: 1.2rem;
+  .page-divider {
+    margin: 0.6rem 0 1rem;
   }
 
   .page-text {
-    font-size: 0.88rem;
-    line-height: 1.7;
+    font-size: 0.82rem;
+    line-height: 1.6;
+  }
+
+  .page-quote {
+    font-size: 0.95rem;
+    padding-left: 1rem;
+    margin: 1rem 0;
+  }
+
+  .page-callout {
+    padding: 1rem;
+    margin: 1rem 0;
+  }
+
+  .cover-title {
+    font-size: 1.5rem;
+  }
+
+  .cover-subtitle {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+  }
+
+  .birthday-message {
+    padding: 1.2rem 0.8rem;
+  }
+
+  .bday-main {
+    font-size: 1.2rem;
+  }
+
+  .bday-sub {
+    font-size: 0.8rem;
+  }
+
+  .superpower-photo-frame {
+    width: min(260px, 70vw);
+    height: min(260px, 70vw);
+    max-height: 40vh;
+    margin-bottom: 1rem;
+  }
+
+  .superpower-headline {
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .finale-superpower-card {
+    padding: 2rem 1.2rem;
+    max-height: 94vh;
+  }
+  
+  .finale-action-btn {
+    padding: 0.8rem 1.8rem;
+    font-size: 0.82rem;
+  }
+  
+  .reveal-superpower-page-btn {
+    padding: 0.75rem 1.5rem;
+    font-size: 0.82rem;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* iPad / Tablet */
+  .floating-quiz-question {
+    font-size: 1.6rem;
+    line-height: 1.4;
+  }
+
+  .scattered-object-item {
+    padding: 1.1rem 1.4rem;
+  }
+
+  .object-emoji {
+    font-size: 2.4rem;
+  }
+
+  #magazine-container {
+    width: 92vw;
+    height: 76vh;
+  }
+
+  .page-content {
+    padding: 2.2rem 1.8rem;
   }
 }
 

@@ -339,9 +339,12 @@ window.HiddenObjectGame = (function() {
 
     if (container) {
       container.addEventListener('mousemove', handleSceneTorchMove);
+      container.addEventListener('touchstart', (e) => {
+        if (e.touches.length > 0) handleSceneTorchMove(e.touches[0]);
+      }, { passive: true });
       container.addEventListener('touchmove', (e) => {
         if (e.touches.length > 0) handleSceneTorchMove(e.touches[0]);
-      });
+      }, { passive: true });
     }
 
     updateHotspotsIllumination();

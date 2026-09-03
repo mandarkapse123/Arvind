@@ -266,15 +266,28 @@ window.QuizGame = (function () {
     playTorchSound(isTorchOn);
   }
 
-  // ─── Scattered Object Placement ─────────────────────────────────────
-  const scatteredPositions = [
-    { top: '18%', left: '16%' },
-    { top: '24%', left: '76%' },
-    { top: '50%', left: '20%' },
-    { top: '54%', left: '78%' },
-    { top: '78%', left: '32%' },
-    { top: '74%', left: '68%' }
+  // ─── Scattered Object Placement (Dynamic for Mobile / iPad / Desktop)
+  const desktopPositions = [
+    { top: '22%', left: '16%' },
+    { top: '24%', left: '84%' },
+    { top: '56%', left: '16%' },
+    { top: '58%', left: '84%' },
+    { top: '84%', left: '28%' },
+    { top: '84%', left: '72%' }
   ];
+
+  const mobilePositions = [
+    { top: '50%', left: '26%' },
+    { top: '50%', left: '74%' },
+    { top: '65%', left: '26%' },
+    { top: '65%', left: '74%' },
+    { top: '80%', left: '26%' },
+    { top: '80%', left: '74%' }
+  ];
+
+  function getScatteredPositions() {
+    return (window.innerWidth <= 768) ? mobilePositions : desktopPositions;
+  }
 
   function createObjectGrid() {
     if (!objectGrid) return;
@@ -282,9 +295,10 @@ window.QuizGame = (function () {
 
     // Shuffle objects for dynamic discovery
     const shuffled = allObjects.slice().sort(() => Math.random() - 0.5);
+    const positions = getScatteredPositions();
 
     shuffled.forEach((obj, idx) => {
-      const pos = scatteredPositions[idx % scatteredPositions.length];
+      const pos = positions[idx % positions.length];
       const item = document.createElement('div');
       item.className = 'scattered-object-item';
       item.setAttribute('data-id', obj.id);
@@ -455,16 +469,32 @@ window.QuizGame = (function () {
 
       if (torchContainer) {
         torchContainer.addEventListener('mousemove', handleTorchMove);
+        torchContainer.addEventListener('touchstart', function (e) {
+          if (e.touches.length > 0) {
+            handleTorchMove(e.touches[0]);
+          }
+        }, { passive: true });
         torchContainer.addEventListener('touchmove', function (e) {
           if (e.touches.length > 0) {
             handleTorchMove(e.touches[0]);
           }
-        });
+        }, { passive: true });
       }
 
       if (torchToggle) {
         torchToggle.addEventListener('click', toggleTorch);
       }
+
+      window.addEventListener('resize', function () {
+        const items = document.querySelectorAll('.scattered-object-item');
+        const positions = getScatteredPositions();
+        items.forEach((item, idx) => {
+          const pos = positions[idx % positions.length];
+          item.style.top = pos.top;
+          item.style.left = pos.left;
+        });
+        updateScatteredObjectsIllumination();
+      });
     },
 
     show: function () {

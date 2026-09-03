@@ -182,12 +182,6 @@ window.Magazine = (function() {
     finaleModal = document.getElementById('finale-superpower-modal');
     if (!finaleModal) return;
 
-    // If already open, return
-    if (finaleModal.style.display === 'flex' && parseFloat(finaleModal.style.opacity || '1') > 0.5) {
-      return;
-    }
-
-    hasTriggeredFinale = true;
     playFlashSound();
 
     if (window.confetti) {
@@ -203,13 +197,14 @@ window.Magazine = (function() {
       gsap.fromTo(flashOverlay, { opacity: 0.9 }, { opacity: 0, duration: 1.0, onComplete: () => { flashOverlay.style.display = 'none'; } });
     }
 
-    // Ensure photo element is refreshed/displayed
+    // Ensure photo element is refreshed and displayed
     const photoImg = document.getElementById('superpower-photo-img');
-    if (photoImg && (!photoImg.src || photoImg.src.includes('undefined'))) {
+    if (photoImg) {
       photoImg.src = 'assets/images/arvind.jpg';
     }
 
     finaleModal.style.display = 'flex';
+    finaleModal.style.zIndex = '999999';
     gsap.killTweensOf(finaleModal);
     gsap.fromTo(finaleModal, 
       { opacity: 0, scale: 0.85, y: 30 },
@@ -285,6 +280,19 @@ window.Magazine = (function() {
         if (window.App && window.App.replay) window.App.replay();
       });
 
+      // Interactive Reveal buttons
+      document.getElementById('reveal-superpower-btn-p9')?.addEventListener('click', triggerFinaleReveal);
+      document.getElementById('reveal-superpower-btn-p10')?.addEventListener('click', triggerFinaleReveal);
+      document.getElementById('reveal-superpower-nav-btn')?.addEventListener('click', triggerFinaleReveal);
+
+      // Mobile / Desktop Flip Next & Previous buttons
+      document.getElementById('mag-prev-btn')?.addEventListener('click', function() {
+        if (pageFlip) pageFlip.flipPrev();
+      });
+      document.getElementById('mag-next-btn')?.addEventListener('click', function() {
+        if (pageFlip) pageFlip.flipNext();
+      });
+
       // Back cover click to reveal finale anytime
       document.querySelector('.page-back-cover')?.addEventListener('click', function() {
         triggerFinaleReveal();
@@ -309,7 +317,7 @@ window.Magazine = (function() {
         stageMagazine.style.opacity = '1';
       }
 
-      // Directly play the real James Blunt - You're Beautiful MP3
+      // Directly play the real James Blunt - You're Beautiful MP3 (plays once)
       playSong();
 
       // Initialize flipbook directly
@@ -323,24 +331,28 @@ window.Magazine = (function() {
       if (isInitialized && pageFlip) return;
       
       try {
+        const isMobile = window.innerWidth <= 768;
+        const baseWidth = isMobile ? Math.min(480, window.innerWidth - 20) : 550;
+        const baseHeight = isMobile ? Math.min(680, window.innerHeight * 0.72) : 720;
+
         pageFlip = new St.PageFlip(flipbook, {
-          width: 550,
-          height: 720,
-          size: 'stretch',
-          minWidth: 320,
+          width: baseWidth,
+          height: baseHeight,
+          size: isMobile ? 'fixed' : 'stretch',
+          minWidth: 280,
           maxWidth: 700,
-          minHeight: 460,
+          minHeight: 400,
           maxHeight: 900,
           maxShadowOpacity: 0.4,
           showCover: true,
-          mobileScrollSupport: false,
-          flippingTime: 850,
-          usePortrait: true,
+          mobileScrollSupport: true,
+          flippingTime: 650,
+          usePortrait: isMobile,
           startZIndex: 0,
           autoSize: true,
           drawShadow: true,
           useMouseEvents: true,
-          swipeDistance: 25,
+          swipeDistance: 20,
           showPageCorners: true,
           disableFlipByClick: false
         });
@@ -363,12 +375,9 @@ window.Magazine = (function() {
             playBirthdayChime();
           }
 
-          // Back cover reached (page 10)
-          if (e.data === 10) {
-            setTimeout(triggerFinaleReveal, 800);
-          } else {
-            // Reset trigger flag when flipping away so turning back triggers it again
-            hasTriggeredFinale = false;
+          // Finale page reached
+          if (e.data >= 9) {
+            setTimeout(triggerFinaleReveal, 700);
           }
         });
 
