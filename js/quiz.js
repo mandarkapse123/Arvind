@@ -5,17 +5,19 @@
 window.QuizGame = (function () {
   'use strict';
 
-  // ─── Object definitions ─────────────────────────────────────────────
+  // ─── Object definitions (All current options + new memories) ───────
   const allObjects = [
-    { id: 'bike', emoji: '🏍️', label: 'Stunt Bike' },
+    { id: 'bike', emoji: '🏍️', label: 'Super Splendor' },
     { id: 'music', emoji: '🎵', label: 'Out-of-Tune Anthem' },
+    { id: 'leg', emoji: '🦵', label: 'One Leg' },
+    { id: 'cards', emoji: '🃏', label: 'Playing Card 6' },
+    { id: 'bat', emoji: '🏏', label: 'Cricket Bat' },
     { id: 'fuel', emoji: '⛽', label: 'Empty Petrol Tank' },
-    { id: 'cards', emoji: '🃏', label: 'Trump Cards' },
     { id: 'cake', emoji: '🎂', label: 'Birthday Cake' },
     { id: 'clock', emoji: '⏰', label: 'Time Warp' },
   ];
 
-  // ─── Revamped Quiz Questions (5 Punchy Friendship Memories) ─────────
+  // ─── Revamped Quiz Questions ────────────────────────────────────────
   const questions = [
     {
       question: "What was our legendary stunt chariot for the glorious, gravity-defying fails at Ground Zero?",
@@ -26,16 +28,16 @@ window.QuizGame = (function () {
       correctId: 'music',
     },
     {
-      question: "When the engine sputtered out mid-ride, what ran dry while we paddled coolly with one leg?",
-      correctId: 'fuel',
+      question: "When the engine sputtered out mid-ride, fuel ran dry what then helped them?",
+      correctId: 'leg',
     },
     {
-      question: "What was our battlefield weapon of choice to settle afternoon disputes and rule over the juniors?",
+      question: "Whom did Prateek and Mandar saw at Futala?",
       correctId: 'cards',
     },
     {
-      question: "What sweet tribute represents celebrating 20 legendary years with the Russian Brother today?",
-      correctId: 'cake',
+      question: "What held the door of his room?",
+      correctId: 'bat',
     },
   ];
 
@@ -268,21 +270,25 @@ window.QuizGame = (function () {
 
   // ─── Scattered Object Placement (Dynamic for Mobile / iPad / Desktop)
   const landscapePositions = [
-    { top: '26%', left: '12%' },
-    { top: '26%', left: '88%' },
-    { top: '64%', left: '12%' },
-    { top: '64%', left: '88%' },
+    { top: '24%', left: '12%' },
+    { top: '24%', left: '88%' },
+    { top: '52%', left: '12%' },
+    { top: '52%', left: '88%' },
+    { top: '78%', left: '12%' },
+    { top: '78%', left: '88%' },
     { top: '84%', left: '34%' },
     { top: '84%', left: '66%' }
   ];
 
   const portraitPositions = [
-    { top: '48%', left: '26%' },
-    { top: '48%', left: '74%' },
-    { top: '64%', left: '26%' },
-    { top: '64%', left: '74%' },
-    { top: '80%', left: '26%' },
-    { top: '80%', left: '74%' }
+    { top: '44%', left: '26%' },
+    { top: '44%', left: '74%' },
+    { top: '58%', left: '26%' },
+    { top: '58%', left: '74%' },
+    { top: '72%', left: '26%' },
+    { top: '72%', left: '74%' },
+    { top: '86%', left: '26%' },
+    { top: '86%', left: '74%' }
   ];
 
   function getScatteredPositions() {

@@ -261,9 +261,14 @@ window.Magazine = (function() {
     }, 200);
   }
 
+  let originalFlipbookHTML = '';
+
   return {
     init: function() {
       flipbook = document.getElementById('flipbook');
+      if (flipbook && !originalFlipbookHTML) {
+        originalFlipbookHTML = flipbook.innerHTML;
+      }
       magazineContainer = document.getElementById('magazine-container');
       finaleModal = document.getElementById('finale-superpower-modal');
       
@@ -286,10 +291,12 @@ window.Magazine = (function() {
         if (window.App && window.App.replay) window.App.replay();
       });
 
-      // Interactive Reveal buttons
-      document.getElementById('reveal-superpower-btn-p9')?.addEventListener('click', triggerFinaleReveal);
-      document.getElementById('reveal-superpower-btn-p10')?.addEventListener('click', triggerFinaleReveal);
-      document.getElementById('reveal-superpower-nav-btn')?.addEventListener('click', triggerFinaleReveal);
+      // Event delegation on flipbook for the back-cover reveal button (survives any innerHTML restore)
+      flipbook?.addEventListener('click', function(e) {
+        if (e.target && (e.target.id === 'reveal-superpower-btn-p10' || e.target.closest('#reveal-superpower-btn-p10') || e.target.closest('.page-back-cover'))) {
+          triggerFinaleReveal();
+        }
+      });
 
       // Mobile / Desktop Flip Next & Previous buttons
       document.getElementById('mag-prev-btn')?.addEventListener('click', function() {
@@ -297,11 +304,6 @@ window.Magazine = (function() {
       });
       document.getElementById('mag-next-btn')?.addEventListener('click', function() {
         if (pageFlip) pageFlip.flipNext();
-      });
-
-      // Back cover click to reveal finale anytime
-      document.querySelector('.page-back-cover')?.addEventListener('click', function() {
-        triggerFinaleReveal();
       });
 
       // User interaction listener to resume audio if browser delayed it
@@ -321,14 +323,30 @@ window.Magazine = (function() {
       if (stageMagazine) {
         stageMagazine.style.display = 'flex';
         stageMagazine.style.opacity = '1';
+        stageMagazine.style.visibility = 'visible';
+      }
+
+      if (magazineContainer) {
+        magazineContainer.style.display = 'block';
+        magazineContainer.style.opacity = '1';
+        magazineContainer.style.transform = 'none';
       }
 
       // Directly play the real James Blunt - You're Beautiful MP3 (plays once)
       playSong();
 
-      // Initialize flipbook directly
+      // Initialize flipbook directly or flip back to 0
       requestAnimationFrame(() => {
-        self.initFlipbook();
+        if (pageFlip && isInitialized) {
+          try {
+            pageFlip.flip(0);
+          } catch(e) {
+            isInitialized = false;
+            self.initFlipbook();
+          }
+        } else {
+          self.initFlipbook();
+        }
       });
     },
     
@@ -431,6 +449,12 @@ window.Magazine = (function() {
         try { pageFlip.destroy(); } catch(e) {}
         pageFlip = null;
       }
+      
+      // Crucial: Restore original uncorrupted page HTML structure!
+      if (flipbook && originalFlipbookHTML) {
+        flipbook.innerHTML = originalFlipbookHTML;
+      }
+
       isInitialized = false;
       hasReachedBirthdayPage = false;
       hasTriggeredFinale = false;
@@ -438,6 +462,12 @@ window.Magazine = (function() {
       const stageMagazine = document.getElementById('stage-magazine');
       if (stageMagazine) {
         stageMagazine.style.display = 'none';
+        stageMagazine.style.opacity = '0';
+      }
+      
+      if (magazineContainer) {
+        magazineContainer.style.opacity = '1';
+        magazineContainer.style.transform = 'none';
       }
       
       const magazineNav = document.querySelector('.magazine-navigation');
